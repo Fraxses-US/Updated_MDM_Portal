@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  clutch_pbm_mdm_portal_v4:
+    build:
+      #context: /cp/capital-pipelines_rest_api_db/project_explorer
+      context: .
+    container_name: clutch_pbm_mdm_portal_v4
+    restart: always
+    ports:
+      - 8080:8080
+
+  
