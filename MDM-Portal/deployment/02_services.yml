@@ -1,0 +1,70 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: clutch-mdm-svc-node
+  namespace: fraxses-clutchhealth
+  labels:
+    component: clutch-mdm
+spec:
+  ports:
+    - name: clutch-mdm-port
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30084
+  selector:
+    component: clutch-mdm
+  type: NodePort
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: clutch-mdm-svc
+  namespace: fraxses-clutchhealth
+  labels:
+    component: clutch-mdm
+spec:
+  ports:
+  - name: clutch-mdm-port
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    component: clutch-mdm
+  type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: clutch-mdm-svc-headless
+  namespace: fraxses-clutchhealth
+  labels:
+    component: clutch-mdm
+spec:
+  ports:
+    - name: clutch-mdm-port
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    component: clutch-mdm
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clutch-mdm-svc-ilb
+  namespace: fraxses-clutchhealth
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+  labels:
+    component: clutch-mdm
+spec:
+  type: LoadBalancer
+  selector:
+    component: clutch-mdm
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP

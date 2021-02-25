@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clutch-mdm
+  namespace: fraxses-clutchhealth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: clutch-mdm
+  template:
+    metadata:
+      labels:
+        component: clutch-mdm
+    spec:
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: fraxses-reg-cred
+      containers:
+        - name: clutch-mdm-img
+          imagePullPolicy: Always
+          image: registry.fraxses.com/project/clutch/mdm:master-001
+          ports:
+            - containerPort: 8080
+              name: clutch-mdm-port
+          terminationMessagePath: "/dev/termination-log"
+          terminationMessagePolicy: File
+          resources:
+            requests:
+              memory: 1000Mi
+              cpu:  1500m
